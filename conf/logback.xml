@@ -5,12 +5,12 @@
                 <resetJUL>true</resetJUL>
         </contextListener>
 
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
                 <encoder>
                         <pattern>%d{HH:mm:ss.SSS} %highlight([%-5level]) %logger{15} - %msg%n%rEx</pattern>
                         <immediateFlush>false</immediateFlush>
                 </encoder>
-        </appender>
+        </appender> -->
 
         <!-- <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
                 <file>/logs/james.log</file>
@@ -39,7 +39,7 @@
         </appender>
 
         <root level="WARN">
-                <appender-ref ref="CONSOLE" />
+                <!-- <appender-ref ref="CONSOLE" /> -->
                 <!-- <appender-ref ref="LOG_FILE" /> -->
                 <appender-ref ref="LOG_JSON" />
         </root>

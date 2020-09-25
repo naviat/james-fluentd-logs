@@ -23,14 +23,11 @@ services:
       - "587:587"
       - "993:993"
       - "8080:8000"
-    # logging:
-    #   driver: "fluentd"
-    #   options:
-    #     fluentd-address: localhost:24224
-    #     tag: james.access
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+    ports:
+      - "9200:9200"
     environment:
       - discovery.type=single-node
 
@@ -53,15 +50,23 @@ services:
       - S3BACKEND=mem
       - LOG_LEVEL=trace
       - REMOTE_MANAGEMENT_DISABLE=1
-  fluentd:
-    build: ./fluentd
+  # fluentd:
+  #   build: ./fluentd
+  #   volumes:
+  #     - ./fluentd/conf:/fluentd/etc
+  #   links:
+  #     - "elasticsearch"
+  #   ports:
+  #     - "24224:24224"
+  #     - "24224:24224/udp"
+  fluent-bit:
+    image: fluent/fluent-bit
     volumes:
-      - ./fluentd/conf:/fluentd/etc
-    links:
-      - "elasticsearch"
-    ports:
-      - "24224:24224"
-      - "24224:24224/udp"
+      - ./fluentbit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf
+    depends_on:
+      - elasticsearch
+
   kibana:
     image: docker.elastic.co/kibana/kibana:6.3.2
     environment:
