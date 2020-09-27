@@ -46,6 +46,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
   s3:
     image: zenko/cloudserver:8.2.6
     container_name: s3.docker.test
@@ -55,20 +56,15 @@ services:
       - S3BACKEND=mem
       - LOG_LEVEL=trace
       - REMOTE_MANAGEMENT_DISABLE=1
-  # fluentd:
-  #   build: ./fluentd
-  #   volumes:
-  #     - ./fluentd/conf:/fluentd/etc
-  #   links:
-  #     - "elasticsearch"
-  #   ports:
-  #     - "24224:24224"
-  #     - "24224:24224/udp"
+
   fluent-bit:
     image: fluent/fluent-bit
     volumes:
       - ./fluentbit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
       - ./fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
     depends_on:
       - elasticsearch
 
