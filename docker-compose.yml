@@ -7,6 +7,7 @@ services:
       - cassandra
       - rabbitmq
       - s3
+      - fluent-bit
     entrypoint: bash -c "java -cp 'james-server.jar:extension-jars/*:james-server-memory-guice.lib/*' -Dworking.directory=/root/ -Dlogback.configurationFile=/root/conf/logback.xml org.apache.james.CassandraRabbitMQJamesServerMain"
     image: linagora/james-rabbitmq-project:branch-master
     container_name: james
@@ -23,6 +24,10 @@ services:
       - "587:587"
       - "993:993"
       - "8080:8000"
+    logging:
+      driver: fluentd
+      options:
+        tag: docker-james
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
