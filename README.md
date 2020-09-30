@@ -1,4 +1,4 @@
-## Try to be try ! Gud luck Duc :)) 
+## Try to be trying ! Gud luck Duc :)) 
 
 ```shell
 wget -qO - https://packages.fluentbit.io/fluentbit.key | apt-key add -
