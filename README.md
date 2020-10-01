@@ -1,4 +1,4 @@
-## Try to be trying ! Gud luck Duc :)) 
+## The work is done, just need to create the `logs` folder to mount to james&&fluent-bit
 
 ```shell
 wget -qO - https://packages.fluentbit.io/fluentbit.key | apt-key add -
