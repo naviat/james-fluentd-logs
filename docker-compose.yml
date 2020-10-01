@@ -14,6 +14,7 @@ services:
     volumes:
       - ./extension-jars:/root/extension-jars
       - ./conf/logback.xml:/root/conf/logback.xml
+      - ./logs:/root/logs
     ports:
       - "80:80"
       - "25:25"
@@ -52,17 +53,18 @@ services:
       - LOG_LEVEL=trace
       - REMOTE_MANAGEMENT_DISABLE=1
 
-  # fluent-bit:
-  #   image: fluent/fluent-bit
-  #   volumes:
-  #     - ./fluentbit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
-  #     - ./fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf
-  #   ports:
-  #     - "24224:24224"
-  #     - "24224:24224/udp"
-  #   depends_on:
-  #     - elasticsearch
-
+  fluent-bit:
+    image: fluent/fluent-bit:1.5.7-debug
+    volumes:
+      - ./fluentbit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./fluentbit/parsers.conf:/fluent-bit/etc/parsers.conf
+      - ./logs:/fluent-bit/log
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    depends_on:
+      - elasticsearch
+      
   kibana:
     image: docker.elastic.co/kibana/kibana:6.3.2
     environment:

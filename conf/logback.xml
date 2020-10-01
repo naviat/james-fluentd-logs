@@ -5,43 +5,37 @@
                 <resetJUL>true</resetJUL>
         </contextListener>
 
-        <!-- <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-                <encoder>
-                        <pattern>%d{HH:mm:ss.SSS} %highlight([%-5level]) %logger{15} - %msg%n%rEx</pattern>
-                        <immediateFlush>false</immediateFlush>
-                </encoder>
-        </appender> -->
-
-        <!-- <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>/logs/james.log</file>
-                <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-                        <fileNamePattern>/logs/james.%i.log.tar.gz</fileNamePattern>
-                        <minIndex>1</minIndex>
-                        <maxIndex>3</maxIndex>
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                        <fileNamePattern>logs/james.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                        <maxHistory>1</maxHistory> 
+                        <totalSizeCap>200MB</totalSizeCap>
+                        <maxFileSize>100MB</maxFileSize>
                 </rollingPolicy>
 
-                <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-                        <maxFileSize>100MB</maxFileSize>
-                </triggeringPolicy>
+                <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                    <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                        <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSSX</timestampFormat>
+                        <timestampFormatTimezoneId>Etc/UTC</timestampFormatTimezoneId>
 
-                <encoder>
-                        <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{15} - %msg%n%rEx</pattern>
-                        <immediateFlush>false</immediateFlush>
-                </encoder>
-        </appender> -->
-        <appender name="LOG_JSON" class="ch.qos.logback.core.ConsoleAppender">
-                <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                        <!-- Importance for handling multiple lines log -->
+                        <appendLineSeparator>true</appendLineSeparator>
+
                         <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
-                                <prettyPrint>true</prettyPrint>
+                            <prettyPrint>false</prettyPrint>
                         </jsonFormatter>
-                        <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
-                </layout>
+                    </layout>
+                </encoder>
         </appender>
 
+        <root level="INFO"><appender-ref ref="LOG_FILE" />
+        </root>
+
+        <root level="DEBUG"><appender-ref ref="LOG_FILE" />
+        </root>
+
         <root level="WARN">
-                <!-- <appender-ref ref="CONSOLE" /> -->
-                <!-- <appender-ref ref="LOG_FILE" /> -->
-                <appender-ref ref="LOG_JSON" />
+                <appender-ref ref="LOG_FILE" />
         </root>
 
         <logger name="org.apache.james" level="INFO" />
